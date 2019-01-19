@@ -50,7 +50,6 @@ void StreamClient::run(void)
         
         if (nReadAmount > 0)
         {
-            //printf("received %zd bytes\n", bytes_read);
             if (!g_fifoClientToAudio.write((const float *)g_bufferClientRecv, (uint32_t)(nReadAmount/sizeof(float))))
                 jassert(false);
         }
