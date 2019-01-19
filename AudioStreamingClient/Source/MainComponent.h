@@ -21,6 +21,7 @@ class MainComponent   : public AudioAppComponent
 {
 private:
     StreamClient m_streamClient;
+    bool m_flagPaused;
 public:
     MainComponent(void);
     ~MainComponent(void);
@@ -30,6 +31,8 @@ public:
     void releaseResources(void) override;
     
     StreamClient *getStreamClient(void);
+    
+    void setPaused(bool flagPaused);
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

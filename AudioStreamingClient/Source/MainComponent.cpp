@@ -14,6 +14,8 @@ MainComponent m_mainComponent;
 
 MainComponent::MainComponent()
 {
+    m_flagPaused = false;
+    
     // specify the number of input and output channels that we want to open
     setAudioChannels (0, 2);
     
@@ -44,8 +46,6 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
 
 void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill)
 {
-    bufferToFill.clearActiveBufferRegion();
-    
     if (g_fifoClientToAudio.getCount() >= AUDIO_START_BUFFER_SIZE)
     {
         int startSample = bufferToFill.startSample;
@@ -58,7 +58,13 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
             jassert(false);
         if (!g_fifoClientToAudio.read(oBufR, (uint32_t)numSamples))
             jassert(false);
+        
+        if (m_flagPaused)
+            bufferToFill.clearActiveBufferRegion();
+            
     }
+    else
+        bufferToFill.clearActiveBufferRegion();
 }
 
 void MainComponent::releaseResources()
@@ -74,6 +80,11 @@ void MainComponent::releaseResources()
 StreamClient *MainComponent::getStreamClient(void)
 {
     return &m_streamClient;
+}
+
+void MainComponent::setPaused(bool flagPaused)
+{
+    m_flagPaused = flagPaused;
 }
 
 //////////////////////////////////////////////////////////////////////////////
