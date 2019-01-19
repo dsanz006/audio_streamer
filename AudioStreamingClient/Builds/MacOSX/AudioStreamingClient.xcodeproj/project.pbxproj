@@ -55,9 +55,9 @@
 		3B75F5E4FEC0D100FC179416 /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = System/Library/Frameworks/DiscRecording.framework; sourceTree = SDKROOT; };
 		3C2A46C821F2996800E3E0E6 /* ClientGui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientGui.cpp; path = ../../Source/ClientGui.cpp; sourceTree = "<group>"; };
 		3C2A46C921F2996800E3E0E6 /* ClientGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientGui.h; path = ../../Source/ClientGui.h; sourceTree = "<group>"; };
+		3C4934A121F2B566002D7605 /* AudioStreamFifo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioStreamFifo.h; path = ../../../common/AudioStreamFifo.h; sourceTree = "<group>"; };
 		3C837ED221EA53D40074DE6F /* StreamClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StreamClient.cpp; path = ../../Source/StreamClient.cpp; sourceTree = "<group>"; };
 		3C837ED321EA53D40074DE6F /* StreamClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StreamClient.h; path = ../../Source/StreamClient.h; sourceTree = "<group>"; };
-		3C911C5221EB88B30074A2A8 /* AudioStreamFifo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AudioStreamFifo.h; path = ../../Source/AudioStreamFifo.h; sourceTree = "<group>"; };
 		3D74E5E74C34D004EFF0B499 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		3D83D0B2911AE0E63A6E2241 /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = ../../Source/Main.cpp; sourceTree = SOURCE_ROOT; };
 		416B4C79CB31F8C1EA50DE59 /* juce_cryptography */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_cryptography; path = ../../../juce_modules/juce_cryptography; sourceTree = "<absolute>"; };
@@ -157,12 +157,12 @@
 		563578BC1F8B6D60157D36F5 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				3C4934A121F2B566002D7605 /* AudioStreamFifo.h */,
 				65564D96FA995163E317F9A6 /* MainComponent.h */,
 				A9AC4373F5679D8E0F7895FC /* MainComponent.cpp */,
 				3D83D0B2911AE0E63A6E2241 /* Main.cpp */,
 				3C837ED221EA53D40074DE6F /* StreamClient.cpp */,
 				3C837ED321EA53D40074DE6F /* StreamClient.h */,
-				3C911C5221EB88B30074A2A8 /* AudioStreamFifo.h */,
 				3C2A46C821F2996800E3E0E6 /* ClientGui.cpp */,
 				3C2A46C921F2996800E3E0E6 /* ClientGui.h */,
 			);
