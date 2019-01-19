@@ -42,6 +42,8 @@ void ClientGui::timerCallback()
     
     if (!m_flagIsPlaying && g_fifoClientToAudio.getCount() >= AUDIO_START_BUFFER_SIZE)
         m_flagIsPlaying = true;
+    else
+        return;
     
     if (m_nPrintCounter == 0)
         m_lab_connectionStatus.setText(String("audio"), dontSendNotification);
