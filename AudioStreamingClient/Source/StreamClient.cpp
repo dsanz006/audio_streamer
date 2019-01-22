@@ -39,7 +39,7 @@ StreamClient::~StreamClient(void)
 
 void StreamClient::run(void)
 {
-    if (!m_clientSocket.connect(String("192.168.1.148"), 5000))
+    if (!m_clientSocket.connect(String("localhost"), 5000))
         error("could not connect socket to remote\n");
     
     jassert(m_clientSocket.isConnected());
