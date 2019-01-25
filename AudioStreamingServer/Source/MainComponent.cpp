@@ -16,6 +16,9 @@ MainComponent m_mainComponent;
 
 MainComponent::MainComponent(void)
 {
+    m_nLeftChannel = 0;
+    m_nChannelCount = 0;
+    
     //to avoid SIGPIPE when trying to write to a closed socket (the above breakpoint too)
     signal(SIGPIPE, SIG_IGN);
     
@@ -23,7 +26,7 @@ MainComponent::MainComponent(void)
     setAudioChannels (14, 12);
     
     //audio fifo: double buffering
-    m_fifoAudioToServer = &g_fifoAudioToServer1;
+    m_pFifoAudioToServer = &g_fifoAudioToServer1;
     
     //start server thread
     m_streamServer.startThread(0); //lowest priority
@@ -47,6 +50,9 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
     auto maxInputChannels  = activeInputChannels .getHighestBit() + 1;
     auto maxOutputChannels = activeOutputChannels.getHighestBit() + 1;
     
+    m_nLeftChannel = maxInputChannels-2;
+    m_nChannelCount = maxInputChannels;
+    
     printf("Device: %s, (ins: %d, outs: %d)\n", deviceName.toRawUTF8(), maxInputChannels, maxOutputChannels);
 }
 
@@ -55,23 +61,23 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
     int startSample = bufferToFill.startSample;
     int numSamples  = bufferToFill.numSamples;
     
-    const float *iBufL = bufferToFill.buffer->getReadPointer(/*12*/0, startSample);
-    const float *iBufR = bufferToFill.buffer->getReadPointer(/*13*/1, startSample);
+    const float *iBufL = bufferToFill.buffer->getReadPointer(m_nLeftChannel, startSample);
+    const float *iBufR = bufferToFill.buffer->getReadPointer(m_nLeftChannel+1, startSample);
     
-    if (!m_fifoAudioToServer->isEmptyEnough((int64_t)2*numSamples))
+    if (!m_pFifoAudioToServer->isEmptyEnough((int64_t)2*numSamples))
     {
-        m_streamServer.setReadyBuffer(m_fifoAudioToServer);
+        m_streamServer.setReadyBuffer(m_pFifoAudioToServer);
         
-        if (m_fifoAudioToServer == &g_fifoAudioToServer1)
-            m_fifoAudioToServer = &g_fifoAudioToServer2;
+        if (m_pFifoAudioToServer == &g_fifoAudioToServer1)
+            m_pFifoAudioToServer = &g_fifoAudioToServer2;
         else
-            m_fifoAudioToServer = & g_fifoAudioToServer1;
+            m_pFifoAudioToServer = & g_fifoAudioToServer1;
         
-        m_fifoAudioToServer->reset();
+        m_pFifoAudioToServer->reset();
     }
-    if (!m_fifoAudioToServer->write(iBufL, (uint32_t)numSamples))
+    if (!m_pFifoAudioToServer->write(iBufL, (uint32_t)numSamples))
         jassert(false);
-    if (!m_fifoAudioToServer->write(iBufR, (uint32_t)numSamples))
+    if (!m_pFifoAudioToServer->write(iBufR, (uint32_t)numSamples))
         jassert(false);
     
     /* simple audio in->out example
@@ -108,6 +114,22 @@ void MainComponent::releaseResources()
 StreamServer *MainComponent::getStreamServer(void)
 {
     return &m_streamServer;
+}
+
+void MainComponent::setLeftChannel(uint8_t nLeftChannel)
+{
+    m_nLeftChannel = nLeftChannel;
+    printf("selected channels %u/%u\n", m_nLeftChannel+1, m_nLeftChannel+2);
+}
+
+uint8_t MainComponent::getLeftChanel(void)
+{
+    return m_nLeftChannel;
+}
+
+uint8_t MainComponent::getChannelCount(void)
+{
+    return m_nChannelCount;
 }
 
 //////////////////////////////////////////////////////////////////////////////

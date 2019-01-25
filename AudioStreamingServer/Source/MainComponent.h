@@ -14,11 +14,14 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-class MainComponent   : public AudioAppComponent
+class MainComponent : public AudioAppComponent
 {
 private:
-    AudioStreamFifo *m_fifoAudioToServer;
+    AudioStreamFifo *m_pFifoAudioToServer;
     StreamServer m_streamServer;
+    
+    uint8_t m_nLeftChannel;
+    uint8_t m_nChannelCount;
     
 public:
     MainComponent(void);
@@ -28,7 +31,11 @@ public:
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override;
     void releaseResources(void) override;
     
+    void setLeftChannel(uint8_t nLeftChannel);
+    
     StreamServer *getStreamServer(void);
+    uint8_t getLeftChanel(void);
+    uint8_t getChannelCount(void);
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

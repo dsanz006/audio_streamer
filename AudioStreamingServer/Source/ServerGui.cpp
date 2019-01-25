@@ -1,6 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////
 
+#include "MainComponent.h"
 #include "ServerGui.h"
+
+//////////////////////////////////////////////////////////////////////////////
+
+extern MainComponent m_mainComponent;
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -34,6 +39,21 @@ ServerGui::ServerGui(StreamServer *pStreamServer)
     m_lab_nTotalConnections.setEditable(false);
     m_lab_nTotalConnections.setText(String("hihi"), dontSendNotification);
     
+    addAndMakeVisible(m_cbx_nChannels);
+    m_cbx_nChannels.setColour(ComboBox::backgroundColourId, Colours::black);
+    m_cbx_nChannels.setColour(ComboBox::textColourId, Colours::white);
+    m_cbx_nChannels.setJustificationType(Justification::centred);
+    
+    uint8_t nSelectionBoxCount = m_mainComponent.getChannelCount()/2;
+    for (int i=0; i<nSelectionBoxCount; i++)
+    {
+        const String strName = String(i*2+1)+String("/")+String(i*2+2);
+        m_cbx_nChannels.addItem(strName, i+1);
+    }
+    
+    m_cbx_nChannels.setSelectedId((m_mainComponent.getLeftChanel()/2)+1);
+    m_cbx_nChannels.addListener(this);
+    
     startTimerHz(2);
 }
 
@@ -58,9 +78,17 @@ void ServerGui::timerCallback()
 
 //////////////////////////////////////////////////////////////////////////////
 
+void ServerGui::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
+{
+    if (comboBoxThatHasChanged == &m_cbx_nChannels)
+        m_mainComponent.setLeftChannel((m_cbx_nChannels.getSelectedId()-1)*2);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
 void ServerGui::paint(Graphics& g)
 {
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+    g.fillAll(getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 }
 
 void ServerGui::resized(void)
@@ -68,6 +96,8 @@ void ServerGui::resized(void)
     m_lab_nCurrentConnections.setBounds(10, 10, getWidth()-20, 30);
     m_lab_nMaxSimultaneousConnections.setBounds(10, 50, getWidth()-20, 30);
     m_lab_nTotalConnections.setBounds(10, 90, getWidth()-20, 30);
+    
+    m_cbx_nChannels.setBounds(10, 130, getWidth()-20, 30);
 }
 
 //////////////////////////////////////////////////////////////////////////////
