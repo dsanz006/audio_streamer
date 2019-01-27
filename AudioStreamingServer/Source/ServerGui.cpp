@@ -47,7 +47,7 @@ ServerGui::ServerGui(StreamServer *pStreamServer)
     uint8_t nSelectionBoxCount = m_mainComponent.getChannelCount()/2;
     for (int i=0; i<nSelectionBoxCount; i++)
     {
-        const String strName = String(i*2+1)+String("/")+String(i*2+2);
+        const String strName = String("channels ")+String(i*2+1)+String("/")+String(i*2+2);
         m_cbx_nChannels.addItem(strName, i+1);
     }
     
